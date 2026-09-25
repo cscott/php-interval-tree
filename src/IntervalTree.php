@@ -363,7 +363,7 @@ final class IntervalTree
      * @param Node<TPoint, TValue>|null $fromNode
      * @return Iterator<Node<TPoint, TValue>>
      */
-    private function treeSearchInterval(Node $searchNode, Node $fromNode = null): Iterator
+    private function treeSearchInterval(Node $searchNode, ?Node $fromNode = null): Iterator
     {
         $fromNode = $fromNode ?? $this->root;
         if ($fromNode->getLeft() !== $this->nilNode && !$fromNode->notIntersectLeftSubtree($searchNode)) {
