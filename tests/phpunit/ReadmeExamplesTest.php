@@ -8,6 +8,7 @@ use DateTimeImmutable;
 use InvalidArgumentException;
 use PHPUnit\Framework\TestCase;
 use Wikimedia\IntervalTree\Interval\DateTimeInterval;
+use Wikimedia\IntervalTree\Interval\HalfOpenNumericInterval;
 use Wikimedia\IntervalTree\Interval\NumericInterval;
 use Wikimedia\IntervalTree\IntervalTree;
 
@@ -23,6 +24,7 @@ use Wikimedia\IntervalTree\IntervalTree;
  * @covers \Wikimedia\IntervalTree\IntervalTree
  * @covers \Wikimedia\IntervalTree\Interval\NumericInterval
  * @covers \Wikimedia\IntervalTree\Interval\DateTimeInterval
+ * @covers \Wikimedia\IntervalTree\Interval\HalfOpenNumericInterval
  * @uses \Wikimedia\IntervalTree\Node
  * @uses \Wikimedia\IntervalTree\NodeColor
  * @uses \Wikimedia\IntervalTree\Pair
@@ -130,6 +132,27 @@ final class ReadmeExamplesTest extends TestCase {
 			new DateTimeImmutable( '2021-01-02 00:00:00' ),
 			new DateTimeImmutable( '2021-01-01 00:00:00' )
 		);
+	}
+
+	/**
+	 * README.md: "Usage" > "Intervals" > "Half-open numeric interval".
+	 * Keep in sync with README.md.
+	 */
+	public function testHalfOpenNumericIntervalUsage(): void {
+		$tree = new IntervalTree();
+		$tree->insert( new HalfOpenNumericInterval( 0, 5 ), 'first' );
+		$tree->insert( new HalfOpenNumericInterval( 5, 10 ), 'second' );
+		$tree->insert( new HalfOpenNumericInterval( 5, 5 ), 'marker' );
+
+		// [0, 5) and [5, 10) don't intersect
+		self::assertSame( 1, $tree->countIntersections( new HalfOpenNumericInterval( 0, 5 ) ) );
+
+		// Find everything that contains the point 5
+		$values = [];
+		foreach ( $tree->findIntersections( new HalfOpenNumericInterval( 5, 5 ) ) as $pair ) {
+			$values[] = $pair->getValue();
+		}
+		self::assertSame( [ 'marker', 'second' ], $values );
 	}
 
 	/**

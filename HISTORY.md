@@ -34,6 +34,8 @@ Bug fixes:
   parameter.
 
 Other changes:
+* Add `HalfOpenNumericInterval`, a half-open `[low, high)` interval in
+  which an empty interval `[p, p)` stands for the point `p`.
 * Document what a custom `IntervalInterface` implementation must do to be
   stored in a tree.
 * Adopt the MediaWiki coding conventions and library layout.

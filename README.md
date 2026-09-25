@@ -115,6 +115,7 @@ $tree->getSize(); // 2
 There are numeric and DateTimeInterface-based interval types included.
 You can also store your own kind of interval by implementing
 `IntervalInterface`; see [Custom interval types](#custom-interval-types).
+`HalfOpenNumericInterval` is an example.
 
 #### Numeric interval
 
@@ -150,6 +151,32 @@ $dateTimeInterval = new DateTimeInterval(
 
 Both constructors throw an `InvalidArgumentException` if the low end is
 greater than the high end.
+
+#### Half-open numeric interval
+
+`HalfOpenNumericInterval` is `[low, high)`: it includes `low` but not
+`high`, so intervals that only touch don't intersect.  An empty interval
+`[p, p)` stands for the point `p`, which makes point queries easy.
+
+```php
+use Wikimedia\IntervalTree\Interval\HalfOpenNumericInterval;
+use Wikimedia\IntervalTree\IntervalTree;
+
+$tree = new IntervalTree();
+$tree->insert(new HalfOpenNumericInterval(0, 5), 'first');
+$tree->insert(new HalfOpenNumericInterval(5, 10), 'second');
+$tree->insert(new HalfOpenNumericInterval(5, 5), 'marker');
+
+// [0, 5) and [5, 10) don't intersect
+$tree->countIntersections(new HalfOpenNumericInterval(0, 5)); // 1
+
+// Find everything that contains the point 5
+$values = [];
+foreach ($tree->findIntersections(new HalfOpenNumericInterval(5, 5)) as $pair) {
+    $values[] = $pair->getValue();
+}
+// $values is ['marker', 'second']
+```
 
 ### Custom interval types
 
