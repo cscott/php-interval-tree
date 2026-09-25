@@ -186,4 +186,28 @@ final class IntervalTreeTest extends TestCase
         self::assertFalse($tree->exist($interval, 0));
         self::assertSame(2, $tree->getSize());
     }
+
+    /**
+     * @uses \Danon\IntervalTree\Interval\NumericInterval
+     * @uses \Danon\IntervalTree\Node
+     * @uses \Danon\IntervalTree\NodeColor
+     * @uses \Danon\IntervalTree\Pair
+     */
+    public function testFindDuplicateIntervalInLeftSubtree(): void
+    {
+        /** @var IntervalTree<int|float, string> $tree */
+        $tree = new IntervalTree();
+        $interval = NumericInterval::fromArray([1, 2]);
+        // Equal intervals are inserted to the right; the rotation on the
+        // third insert moves 'a' into the left subtree of 'b'.
+        $tree->insert($interval, 'a');
+        $tree->insert($interval, 'b');
+        $tree->insert($interval, 'c');
+        self::assertTrue($tree->exist($interval, 'a'));
+        self::assertTrue($tree->exist($interval, 'b'));
+        self::assertTrue($tree->exist($interval, 'c'));
+        self::assertTrue($tree->remove($interval, 'a'));
+        self::assertFalse($tree->exist($interval, 'a'));
+        self::assertSame(2, $tree->getSize());
+    }
 }

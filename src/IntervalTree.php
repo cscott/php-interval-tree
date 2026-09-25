@@ -352,14 +352,20 @@ final class IntervalTree
         }
 
         if ($node->equalTo($startingNode)) {
-            $searchedNode = $startingNode;
-        } elseif ($node->lessThan($startingNode)) {
-            $searchedNode = $this->treeSearch($startingNode->getLeft(), $node);
-        } else {
-            $searchedNode = $this->treeSearch($startingNode->getRight(), $node);
+            return $startingNode;
+        }
+        if ($node->lessThan($startingNode)) {
+            return $this->treeSearch($startingNode->getLeft(), $node);
+        }
+        if ($startingNode->lessThan($node)) {
+            return $this->treeSearch($startingNode->getRight(), $node);
         }
 
-        return $searchedNode;
+        // Same interval, different value.  Equal intervals are inserted to
+        // the right, but rotations can move them to either side, so search
+        // both subtrees.
+        return $this->treeSearch($startingNode->getLeft(), $node)
+            ?? $this->treeSearch($startingNode->getRight(), $node);
     }
 
     /**
