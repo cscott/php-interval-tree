@@ -118,4 +118,48 @@ final class IntervalTreeTest extends TestCase
         self::assertTrue((new IntervalTree())->isEmpty());
         self::assertFalse($this->tree->isEmpty());
     }
+
+    /**
+     * @uses \Danon\IntervalTree\Interval\NumericInterval
+     * @uses \Danon\IntervalTree\Node
+     * @uses \Danon\IntervalTree\NodeColor
+     * @uses \Danon\IntervalTree\Pair
+     */
+    public function testQueriesOnNewEmptyTree(): void
+    {
+        /** @var IntervalTree<int|float, string> $tree */
+        $tree = new IntervalTree();
+        $interval = NumericInterval::fromArray([1, 2]);
+        self::assertSame(0, $tree->getSize());
+        self::assertSame([], iterator_to_array($tree->findIntersections($interval)));
+        self::assertFalse($tree->hasIntersection($interval));
+        self::assertSame(0, $tree->countIntersections($interval));
+        self::assertFalse($tree->exist($interval, 'a'));
+        self::assertFalse($tree->remove($interval, 'a'));
+    }
+
+    /**
+     * @uses \Danon\IntervalTree\Interval\NumericInterval
+     * @uses \Danon\IntervalTree\Node
+     * @uses \Danon\IntervalTree\NodeColor
+     * @uses \Danon\IntervalTree\Pair
+     */
+    public function testQueriesAfterRemovingEverything(): void
+    {
+        foreach (self::TREE_INTERVALS as $interval) {
+            self::assertTrue($this->tree->remove(NumericInterval::fromArray($interval), implode('-', $interval)));
+        }
+        $interval = NumericInterval::fromArray([0, 99]);
+        self::assertTrue($this->tree->isEmpty());
+        self::assertSame(0, $this->tree->getSize());
+        self::assertSame([], iterator_to_array($this->tree->findIntersections($interval)));
+        self::assertFalse($this->tree->hasIntersection($interval));
+        self::assertSame(0, $this->tree->countIntersections($interval));
+        self::assertFalse($this->tree->exist($interval, 'a'));
+        self::assertFalse($this->tree->remove($interval, 'a'));
+
+        $this->tree->insert(NumericInterval::fromArray([5, 6]), 'b');
+        self::assertSame(1, $this->tree->getSize());
+        self::assertSame(1, $this->tree->countIntersections($interval));
+    }
 }

@@ -25,6 +25,7 @@ final class IntervalTree
     public function __construct()
     {
         $this->nilNode = Node::nil();
+        $this->root = $this->nilNode;
     }
 
     /**
@@ -44,7 +45,7 @@ final class IntervalTree
      */
     public function isEmpty(): bool
     {
-        return ($this->root === null || $this->root === $this->nilNode);
+        return $this->root === $this->nilNode;
     }
 
     /**
@@ -54,6 +55,9 @@ final class IntervalTree
      */
     public function findIntersections(IntervalInterface $interval): Iterator
     {
+        if ($this->isEmpty()) {
+            return;
+        }
         $searchNode = Node::withPair(new Pair($interval));
         foreach ($this->treeSearchInterval($searchNode) as $node) {
             yield $node->getPair();
@@ -156,7 +160,7 @@ final class IntervalTree
         $currentNode = $this->root;
         $parentNode = null;
 
-        if ($this->root === null || $this->root === $this->nilNode) {
+        if ($this->isEmpty()) {
             $this->root = $insertNode;
         } else {
             while ($currentNode !== $this->nilNode) {
@@ -484,10 +488,11 @@ final class IntervalTree
      */
     private function treeWalk(): Iterator
     {
-        if ($this->root !== null) {
-            $stack = [$this->root];
-            yield $this->root;
+        if ($this->isEmpty()) {
+            return;
         }
+        $stack = [$this->root];
+        yield $this->root;
         while (!empty($stack)) {
             $node = array_pop($stack);
             if ($node->getLeft() !== $this->nilNode) {
