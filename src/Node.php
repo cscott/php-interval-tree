@@ -154,11 +154,8 @@ final class Node
      */
     public function equalTo(Node $otherNode): bool
     {
-        $valueEqual = true;
-        if ($this->getPair()->getValue() && $otherNode->getPair()->getValue()) {
-            $valueEqual = $this->getPair()->getValue() === $otherNode->getPair()->getValue();
-        }
-        return $this->getPair()->getInterval()->equalTo($otherNode->getPair()->getInterval()) && $valueEqual;
+        return $this->getPair()->getInterval()->equalTo($otherNode->getPair()->getInterval())
+            && $this->getPair()->getValue() === $otherNode->getPair()->getValue();
     }
 
     /**

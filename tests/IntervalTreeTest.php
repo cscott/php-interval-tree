@@ -162,4 +162,28 @@ final class IntervalTreeTest extends TestCase
         self::assertSame(1, $this->tree->getSize());
         self::assertSame(1, $this->tree->countIntersections($interval));
     }
+
+    /**
+     * @uses \Danon\IntervalTree\Interval\NumericInterval
+     * @uses \Danon\IntervalTree\Node
+     * @uses \Danon\IntervalTree\NodeColor
+     * @uses \Danon\IntervalTree\Pair
+     */
+    public function testRemoveWithFalsyValue(): void
+    {
+        /** @var IntervalTree<int|float, int|string> $tree */
+        $tree = new IntervalTree();
+        $interval = NumericInterval::fromArray([1, 2]);
+        $tree->insert($interval, 'a');
+        $tree->insert($interval, 'b');
+        self::assertFalse($tree->exist($interval, 0));
+        self::assertFalse($tree->remove($interval, 0));
+        self::assertSame(2, $tree->getSize());
+
+        $tree->insert($interval, 0);
+        self::assertTrue($tree->exist($interval, 0));
+        self::assertTrue($tree->remove($interval, 0));
+        self::assertFalse($tree->exist($interval, 0));
+        self::assertSame(2, $tree->getSize());
+    }
 }

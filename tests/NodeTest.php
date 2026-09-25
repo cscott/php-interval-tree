@@ -89,6 +89,23 @@ class NodeTest extends TestCase
     /**
      * @uses \Danon\IntervalTree\Pair
      * @uses \Danon\IntervalTree\Interval\NumericInterval
+     */
+    public function testEqualToComparesFalsyValues(): void
+    {
+        $interval = NumericInterval::fromArray([1, 5]);
+        $node = Node::withPair(new Pair($interval, 'foo'));
+        foreach ([0, 0.0, '', '0', null, false, []] as $falsy) {
+            $falsyNode = Node::withPair(new Pair($interval, $falsy));
+            self::assertFalse($node->equalTo($falsyNode));
+            self::assertFalse($falsyNode->equalTo($node));
+            self::assertTrue($falsyNode->equalTo(Node::withPair(new Pair($interval, $falsy))));
+        }
+        self::assertFalse(Node::withPair(new Pair($interval, 0))->equalTo(Node::withPair(new Pair($interval, null))));
+    }
+
+    /**
+     * @uses \Danon\IntervalTree\Pair
+     * @uses \Danon\IntervalTree\Interval\NumericInterval
      * @covers \Danon\IntervalTree\Node::getRight
      */
     public function testSetRight(): void
