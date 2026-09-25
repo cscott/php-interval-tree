@@ -1,6 +1,6 @@
 <?php
 
-declare(strict_types=1);
+declare( strict_types=1 );
 
 namespace Danon\IntervalTree\Tests;
 
@@ -11,203 +11,194 @@ use PHPUnit\Framework\TestCase;
 /**
  * @covers \Danon\IntervalTree\IntervalTree
  */
-final class IntervalTreeTest extends TestCase
-{
-    private const TREE_INTERVALS = [
-        [7, 8], [1, 4], [2, 3], [7, 12], [1, 1], [3, 4], [7, 7], [0, 2], [0, 2], [0, 3], [9, 12]
-    ];
+final class IntervalTreeTest extends TestCase {
+	private const TREE_INTERVALS = [
+		[ 7, 8 ], [ 1, 4 ], [ 2, 3 ], [ 7, 12 ], [ 1, 1 ], [ 3, 4 ], [ 7, 7 ], [ 0, 2 ], [ 0, 2 ], [ 0, 3 ], [ 9, 12 ]
+	];
 
-    /** @var IntervalTree<int|float, string>  */
-    private $tree;
+	/** @var IntervalTree<int, string> */
+	private $tree;
 
-    public function setUp(): void
-    {
-        $this->tree = new IntervalTree();
-        foreach (self::TREE_INTERVALS as $interval) {
-            $value = implode('-', $interval);
-            $this->tree->insert(
-                NumericInterval::fromArray($interval),
-                $value
-            );
-        }
-        parent::setUp();
-    }
+	public function setUp(): void {
+		$this->tree = new IntervalTree();
+		foreach ( self::TREE_INTERVALS as $interval ) {
+			$value = implode( '-', $interval );
+			$this->tree->insert(
+				NumericInterval::fromArray( $interval ),
+				$value
+			);
+		}
+		parent::setUp();
+	}
 
-    /**
-     * @uses \Danon\IntervalTree\Interval\NumericInterval
-     * @uses \Danon\IntervalTree\Node
-     * @uses \Danon\IntervalTree\NodeColor
-     * @uses \Danon\IntervalTree\Pair
-     */
-    public function testFindIntersections(): void
-    {
-        $checkInterval = [2, 3];
-        /** @var array<int[]> $overlappingIntervals */
-        $overlappingIntervals = [[0, 2], [0, 2], [0, 3], [1, 4], [2, 3], [3, 4]];
-        $intersections = $this->tree->findIntersections(NumericInterval::fromArray($checkInterval));
-        foreach ($intersections as $index => $pair) {
-            $overlappingInterval = NumericInterval::fromArray($overlappingIntervals[$index]);
-            $overlappingValue = implode('-', $overlappingIntervals[$index]);
-            self::assertTrue($overlappingInterval->equalTo(NumericInterval::fromArray([
-                $pair->getInterval()->getLow(),
-                $pair->getInterval()->getHigh(),
-            ])));
-            self::assertEquals($overlappingValue, $pair->getValue());
-        }
-    }
+	/**
+	 * @uses \Danon\IntervalTree\Interval\NumericInterval
+	 * @uses \Danon\IntervalTree\Node
+	 * @uses \Danon\IntervalTree\NodeColor
+	 * @uses \Danon\IntervalTree\Pair
+	 */
+	public function testFindIntersections(): void {
+		$checkInterval = [ 2, 3 ];
+		/** @var array<int[]> $overlappingIntervals */
+		$overlappingIntervals = [ [ 0, 2 ], [ 0, 2 ], [ 0, 3 ], [ 1, 4 ], [ 2, 3 ], [ 3, 4 ] ];
+		$intersections = $this->tree->findIntersections( NumericInterval::fromArray( $checkInterval ) );
+		foreach ( $intersections as $index => $pair ) {
+			$overlappingInterval = NumericInterval::fromArray( $overlappingIntervals[$index] );
+			$overlappingValue = implode( '-', $overlappingIntervals[$index] );
+			self::assertTrue( $overlappingInterval->equalTo( NumericInterval::fromArray( [
+				$pair->getInterval()->getLow(),
+				$pair->getInterval()->getHigh(),
+			] ) ) );
+			self::assertEquals( $overlappingValue, $pair->getValue() );
+		}
+	}
 
-    /**
-     * @uses \Danon\IntervalTree\Interval\NumericInterval
-     * @uses \Danon\IntervalTree\Node
-     * @uses \Danon\IntervalTree\NodeColor
-     * @uses \Danon\IntervalTree\Pair
-     */
-    public function testFindAnyIntersection(): void
-    {
-        self::assertTrue($this->tree->hasIntersection(NumericInterval::fromArray([2, 3])));
-        self::assertTrue($this->tree->hasIntersection(NumericInterval::fromArray([0, 1])));
-        self::assertTrue($this->tree->hasIntersection(NumericInterval::fromArray([0, 12])));
-        self::assertTrue($this->tree->hasIntersection(NumericInterval::fromArray([0, 0])));
-        self::assertTrue($this->tree->hasIntersection(NumericInterval::fromArray([0, 99])));
-        self::assertTrue($this->tree->hasIntersection(NumericInterval::fromArray([5, 7])));
-        self::assertTrue($this->tree->hasIntersection(NumericInterval::fromArray([6, 7])));
-        self::assertFalse($this->tree->hasIntersection(NumericInterval::fromArray([13, 14])));
-        self::assertFalse($this->tree->hasIntersection(NumericInterval::fromArray([5, 5])));
-        self::assertFalse($this->tree->hasIntersection(NumericInterval::fromArray([5, 6])));
-        self::assertFalse($this->tree->hasIntersection(NumericInterval::fromArray([6, 6])));
-    }
+	/**
+	 * @uses \Danon\IntervalTree\Interval\NumericInterval
+	 * @uses \Danon\IntervalTree\Node
+	 * @uses \Danon\IntervalTree\NodeColor
+	 * @uses \Danon\IntervalTree\Pair
+	 */
+	public function testFindAnyIntersection(): void {
+		self::assertTrue( $this->tree->hasIntersection( NumericInterval::fromArray( [ 2, 3 ] ) ) );
+		self::assertTrue( $this->tree->hasIntersection( NumericInterval::fromArray( [ 0, 1 ] ) ) );
+		self::assertTrue( $this->tree->hasIntersection( NumericInterval::fromArray( [ 0, 12 ] ) ) );
+		self::assertTrue( $this->tree->hasIntersection( NumericInterval::fromArray( [ 0, 0 ] ) ) );
+		self::assertTrue( $this->tree->hasIntersection( NumericInterval::fromArray( [ 0, 99 ] ) ) );
+		self::assertTrue( $this->tree->hasIntersection( NumericInterval::fromArray( [ 5, 7 ] ) ) );
+		self::assertTrue( $this->tree->hasIntersection( NumericInterval::fromArray( [ 6, 7 ] ) ) );
+		self::assertFalse( $this->tree->hasIntersection( NumericInterval::fromArray( [ 13, 14 ] ) ) );
+		self::assertFalse( $this->tree->hasIntersection( NumericInterval::fromArray( [ 5, 5 ] ) ) );
+		self::assertFalse( $this->tree->hasIntersection( NumericInterval::fromArray( [ 5, 6 ] ) ) );
+		self::assertFalse( $this->tree->hasIntersection( NumericInterval::fromArray( [ 6, 6 ] ) ) );
+	}
 
-    /**
-     * @uses \Danon\IntervalTree\Interval\NumericInterval
-     * @uses \Danon\IntervalTree\Node
-     * @uses \Danon\IntervalTree\NodeColor
-     * @uses \Danon\IntervalTree\Pair
-     */
-    public function testRemove(): void
-    {
-        $initialSize = $this->tree->getSize();
-        self::assertEquals(count(self::TREE_INTERVALS), $initialSize);
-        self::assertTrue($this->tree->remove(NumericInterval::fromArray([7, 8]), '7-8'));
-        self::assertEquals($this->tree->getSize(), --$initialSize);
-        self::assertFalse($this->tree->remove(NumericInterval::fromArray([1, 4]), '1-3'));
-        self::assertEquals($this->tree->getSize(), $initialSize);
-        self::assertTrue($this->tree->remove(NumericInterval::fromArray([1, 4]), '1-4'));
-        self::assertEquals($this->tree->getSize(), --$initialSize);
-        self::assertTrue($this->tree->remove(NumericInterval::fromArray([1, 1]), '1-1'));
-        self::assertEquals($this->tree->getSize(), --$initialSize);
-        self::assertTrue($this->tree->remove(NumericInterval::fromArray([0, 2]), '0-2'));
-        self::assertEquals($this->tree->getSize(), --$initialSize);
-        self::assertFalse($this->tree->remove(NumericInterval::fromArray([0, 0]), '0-0'));
-        self::assertEquals($this->tree->getSize(), $initialSize);
-        self::assertTrue($this->tree->remove(NumericInterval::fromArray([7, 12]), '7-12'));
-        self::assertEquals($this->tree->getSize(), --$initialSize);
-        self::assertFalse($this->tree->remove(NumericInterval::fromArray([7, 12]), '7-90'));
-        self::assertEquals($this->tree->getSize(), $initialSize);
-        self::assertFalse($this->tree->remove(NumericInterval::fromArray([7, 12]), '7-12'));
-        self::assertEquals($this->tree->getSize(), $initialSize);
-    }
+	/**
+	 * @uses \Danon\IntervalTree\Interval\NumericInterval
+	 * @uses \Danon\IntervalTree\Node
+	 * @uses \Danon\IntervalTree\NodeColor
+	 * @uses \Danon\IntervalTree\Pair
+	 */
+	public function testRemove(): void {
+		$initialSize = $this->tree->getSize();
+		self::assertEquals( count( self::TREE_INTERVALS ), $initialSize );
+		self::assertTrue( $this->tree->remove( NumericInterval::fromArray( [ 7, 8 ] ), '7-8' ) );
+		self::assertEquals( $this->tree->getSize(), --$initialSize );
+		self::assertFalse( $this->tree->remove( NumericInterval::fromArray( [ 1, 4 ] ), '1-3' ) );
+		self::assertEquals( $this->tree->getSize(), $initialSize );
+		self::assertTrue( $this->tree->remove( NumericInterval::fromArray( [ 1, 4 ] ), '1-4' ) );
+		self::assertEquals( $this->tree->getSize(), --$initialSize );
+		self::assertTrue( $this->tree->remove( NumericInterval::fromArray( [ 1, 1 ] ), '1-1' ) );
+		self::assertEquals( $this->tree->getSize(), --$initialSize );
+		self::assertTrue( $this->tree->remove( NumericInterval::fromArray( [ 0, 2 ] ), '0-2' ) );
+		self::assertEquals( $this->tree->getSize(), --$initialSize );
+		self::assertFalse( $this->tree->remove( NumericInterval::fromArray( [ 0, 0 ] ), '0-0' ) );
+		self::assertEquals( $this->tree->getSize(), $initialSize );
+		self::assertTrue( $this->tree->remove( NumericInterval::fromArray( [ 7, 12 ] ), '7-12' ) );
+		self::assertEquals( $this->tree->getSize(), --$initialSize );
+		self::assertFalse( $this->tree->remove( NumericInterval::fromArray( [ 7, 12 ] ), '7-90' ) );
+		self::assertEquals( $this->tree->getSize(), $initialSize );
+		self::assertFalse( $this->tree->remove( NumericInterval::fromArray( [ 7, 12 ] ), '7-12' ) );
+		self::assertEquals( $this->tree->getSize(), $initialSize );
+	}
 
-    /**
-     * @uses \Danon\IntervalTree\Interval\NumericInterval
-     * @uses \Danon\IntervalTree\Node
-     * @uses \Danon\IntervalTree\NodeColor
-     * @uses \Danon\IntervalTree\Pair
-     */
-    public function testIsEmpty(): void
-    {
-        self::assertTrue((new IntervalTree())->isEmpty());
-        self::assertFalse($this->tree->isEmpty());
-    }
+	/**
+	 * @uses \Danon\IntervalTree\Interval\NumericInterval
+	 * @uses \Danon\IntervalTree\Node
+	 * @uses \Danon\IntervalTree\NodeColor
+	 * @uses \Danon\IntervalTree\Pair
+	 */
+	public function testIsEmpty(): void {
+		self::assertTrue( ( new IntervalTree() )->isEmpty() );
+		self::assertFalse( $this->tree->isEmpty() );
+	}
 
-    /**
-     * @uses \Danon\IntervalTree\Interval\NumericInterval
-     * @uses \Danon\IntervalTree\Node
-     * @uses \Danon\IntervalTree\NodeColor
-     * @uses \Danon\IntervalTree\Pair
-     */
-    public function testQueriesOnNewEmptyTree(): void
-    {
-        /** @var IntervalTree<int|float, string> $tree */
-        $tree = new IntervalTree();
-        $interval = NumericInterval::fromArray([1, 2]);
-        self::assertSame(0, $tree->getSize());
-        self::assertSame([], iterator_to_array($tree->findIntersections($interval)));
-        self::assertFalse($tree->hasIntersection($interval));
-        self::assertSame(0, $tree->countIntersections($interval));
-        self::assertFalse($tree->exist($interval, 'a'));
-        self::assertFalse($tree->remove($interval, 'a'));
-    }
+	/**
+	 * @uses \Danon\IntervalTree\Interval\NumericInterval
+	 * @uses \Danon\IntervalTree\Node
+	 * @uses \Danon\IntervalTree\NodeColor
+	 * @uses \Danon\IntervalTree\Pair
+	 */
+	public function testQueriesOnNewEmptyTree(): void {
+		/** @var IntervalTree<int, string> $tree */
+		$tree = new IntervalTree();
+		$interval = NumericInterval::fromArray( [ 1, 2 ] );
+		self::assertSame( 0, $tree->getSize() );
+		self::assertSame( [], iterator_to_array( $tree->findIntersections( $interval ) ) );
+		self::assertFalse( $tree->hasIntersection( $interval ) );
+		self::assertSame( 0, $tree->countIntersections( $interval ) );
+		self::assertFalse( $tree->exist( $interval, 'a' ) );
+		self::assertFalse( $tree->remove( $interval, 'a' ) );
+	}
 
-    /**
-     * @uses \Danon\IntervalTree\Interval\NumericInterval
-     * @uses \Danon\IntervalTree\Node
-     * @uses \Danon\IntervalTree\NodeColor
-     * @uses \Danon\IntervalTree\Pair
-     */
-    public function testQueriesAfterRemovingEverything(): void
-    {
-        foreach (self::TREE_INTERVALS as $interval) {
-            self::assertTrue($this->tree->remove(NumericInterval::fromArray($interval), implode('-', $interval)));
-        }
-        $interval = NumericInterval::fromArray([0, 99]);
-        self::assertTrue($this->tree->isEmpty());
-        self::assertSame(0, $this->tree->getSize());
-        self::assertSame([], iterator_to_array($this->tree->findIntersections($interval)));
-        self::assertFalse($this->tree->hasIntersection($interval));
-        self::assertSame(0, $this->tree->countIntersections($interval));
-        self::assertFalse($this->tree->exist($interval, 'a'));
-        self::assertFalse($this->tree->remove($interval, 'a'));
+	/**
+	 * @uses \Danon\IntervalTree\Interval\NumericInterval
+	 * @uses \Danon\IntervalTree\Node
+	 * @uses \Danon\IntervalTree\NodeColor
+	 * @uses \Danon\IntervalTree\Pair
+	 */
+	public function testQueriesAfterRemovingEverything(): void {
+		foreach ( self::TREE_INTERVALS as $interval ) {
+			$value = implode( '-', $interval );
+			self::assertTrue( $this->tree->remove( NumericInterval::fromArray( $interval ), $value ) );
+		}
+		$interval = NumericInterval::fromArray( [ 0, 99 ] );
+		self::assertTrue( $this->tree->isEmpty() );
+		self::assertSame( 0, $this->tree->getSize() );
+		self::assertSame( [], iterator_to_array( $this->tree->findIntersections( $interval ) ) );
+		self::assertFalse( $this->tree->hasIntersection( $interval ) );
+		self::assertSame( 0, $this->tree->countIntersections( $interval ) );
+		self::assertFalse( $this->tree->exist( $interval, 'a' ) );
+		self::assertFalse( $this->tree->remove( $interval, 'a' ) );
 
-        $this->tree->insert(NumericInterval::fromArray([5, 6]), 'b');
-        self::assertSame(1, $this->tree->getSize());
-        self::assertSame(1, $this->tree->countIntersections($interval));
-    }
+		$this->tree->insert( NumericInterval::fromArray( [ 5, 6 ] ), 'b' );
+		self::assertSame( 1, $this->tree->getSize() );
+		self::assertSame( 1, $this->tree->countIntersections( $interval ) );
+	}
 
-    /**
-     * @uses \Danon\IntervalTree\Interval\NumericInterval
-     * @uses \Danon\IntervalTree\Node
-     * @uses \Danon\IntervalTree\NodeColor
-     * @uses \Danon\IntervalTree\Pair
-     */
-    public function testRemoveWithFalsyValue(): void
-    {
-        /** @var IntervalTree<int|float, int|string> $tree */
-        $tree = new IntervalTree();
-        $interval = NumericInterval::fromArray([1, 2]);
-        $tree->insert($interval, 'a');
-        $tree->insert($interval, 'b');
-        self::assertFalse($tree->exist($interval, 0));
-        self::assertFalse($tree->remove($interval, 0));
-        self::assertSame(2, $tree->getSize());
+	/**
+	 * @uses \Danon\IntervalTree\Interval\NumericInterval
+	 * @uses \Danon\IntervalTree\Node
+	 * @uses \Danon\IntervalTree\NodeColor
+	 * @uses \Danon\IntervalTree\Pair
+	 */
+	public function testRemoveWithFalsyValue(): void {
+		/** @var IntervalTree<int, int|string> $tree */
+		$tree = new IntervalTree();
+		$interval = NumericInterval::fromArray( [ 1, 2 ] );
+		$tree->insert( $interval, 'a' );
+		$tree->insert( $interval, 'b' );
+		self::assertFalse( $tree->exist( $interval, 0 ) );
+		self::assertFalse( $tree->remove( $interval, 0 ) );
+		self::assertSame( 2, $tree->getSize() );
 
-        $tree->insert($interval, 0);
-        self::assertTrue($tree->exist($interval, 0));
-        self::assertTrue($tree->remove($interval, 0));
-        self::assertFalse($tree->exist($interval, 0));
-        self::assertSame(2, $tree->getSize());
-    }
+		$tree->insert( $interval, 0 );
+		self::assertTrue( $tree->exist( $interval, 0 ) );
+		self::assertTrue( $tree->remove( $interval, 0 ) );
+		self::assertFalse( $tree->exist( $interval, 0 ) );
+		self::assertSame( 2, $tree->getSize() );
+	}
 
-    /**
-     * @uses \Danon\IntervalTree\Interval\NumericInterval
-     * @uses \Danon\IntervalTree\Node
-     * @uses \Danon\IntervalTree\NodeColor
-     * @uses \Danon\IntervalTree\Pair
-     */
-    public function testFindDuplicateIntervalInLeftSubtree(): void
-    {
-        /** @var IntervalTree<int|float, string> $tree */
-        $tree = new IntervalTree();
-        $interval = NumericInterval::fromArray([1, 2]);
-        // Equal intervals are inserted to the right; the rotation on the
-        // third insert moves 'a' into the left subtree of 'b'.
-        $tree->insert($interval, 'a');
-        $tree->insert($interval, 'b');
-        $tree->insert($interval, 'c');
-        self::assertTrue($tree->exist($interval, 'a'));
-        self::assertTrue($tree->exist($interval, 'b'));
-        self::assertTrue($tree->exist($interval, 'c'));
-        self::assertTrue($tree->remove($interval, 'a'));
-        self::assertFalse($tree->exist($interval, 'a'));
-        self::assertSame(2, $tree->getSize());
-    }
+	/**
+	 * @uses \Danon\IntervalTree\Interval\NumericInterval
+	 * @uses \Danon\IntervalTree\Node
+	 * @uses \Danon\IntervalTree\NodeColor
+	 * @uses \Danon\IntervalTree\Pair
+	 */
+	public function testFindDuplicateIntervalInLeftSubtree(): void {
+		/** @var IntervalTree<int, string> $tree */
+		$tree = new IntervalTree();
+		$interval = NumericInterval::fromArray( [ 1, 2 ] );
+		// Equal intervals are inserted to the right; the rotation on the
+		// third insert moves 'a' into the left subtree of 'b'.
+		$tree->insert( $interval, 'a' );
+		$tree->insert( $interval, 'b' );
+		$tree->insert( $interval, 'c' );
+		self::assertTrue( $tree->exist( $interval, 'a' ) );
+		self::assertTrue( $tree->exist( $interval, 'b' ) );
+		self::assertTrue( $tree->exist( $interval, 'c' ) );
+		self::assertTrue( $tree->remove( $interval, 'a' ) );
+		self::assertFalse( $tree->exist( $interval, 'a' ) );
+		self::assertSame( 2, $tree->getSize() );
+	}
 }

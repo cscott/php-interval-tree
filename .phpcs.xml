@@ -1,23 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <ruleset>
-	<rule ref="./vendor/mediawiki/mediawiki-codesniffer/MediaWiki">
-		<!-- Pre-existing violations, to be fixed in a follow-up -->
-		<exclude name="Generic.Functions.OpeningFunctionBraceKernighanRitchie.BraceOnNewLine" />
-		<exclude name="Generic.WhiteSpace.DisallowSpaceIndent.SpacesUsed" />
-		<exclude name="MediaWiki.Classes.UnsortedUseStatements.UnsortedUse" />
-		<exclude name="MediaWiki.Classes.UnusedUseStatement.UnusedUse" />
-		<exclude name="MediaWiki.Commenting.DocComment.SpacingSingleLineCloseTag" />
-		<exclude name="MediaWiki.Commenting.FunctionAnnotations.NonNormalizedAnnotation" />
-		<exclude name="MediaWiki.Commenting.FunctionAnnotations.UnrecognizedAnnotation" />
-		<exclude name="MediaWiki.Commenting.FunctionComment.DefaultNullTypeParam" />
-		<exclude name="MediaWiki.PHPUnit.AssertEquals.Int" />
-		<exclude name="MediaWiki.WhiteSpace.EmptyLinesBetweenUse.Found" />
-		<exclude name="MediaWiki.WhiteSpace.SpaceBeforeClassBrace.BraceNotOnSameLine" />
-		<exclude name="MediaWiki.WhiteSpace.SpaceyParenthesis.SingleSpaceAfterOpenParenthesis" />
-		<exclude name="MediaWiki.WhiteSpace.SpaceyParenthesis.SingleSpaceBeforeCloseParenthesis" />
-		<exclude name="Squiz.Functions.FunctionDeclarationArgumentSpacing.SpacingAfterOpen" />
-		<exclude name="Squiz.Functions.FunctionDeclarationArgumentSpacing.SpacingBeforeClose" />
-	</rule>
+	<rule ref="./vendor/mediawiki/mediawiki-codesniffer/MediaWiki" />
 	<file>.</file>
 	<arg name="encoding" value="UTF-8"/>
 	<arg name="extensions" value="php"/>

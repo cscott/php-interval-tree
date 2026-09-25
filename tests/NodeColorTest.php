@@ -8,17 +8,14 @@ use PHPUnit\Framework\TestCase;
 /**
  * @covers \Danon\IntervalTree\NodeColor
  */
-final class NodeColorTest extends TestCase
-{
-    public function testBlack(): void
-    {
-        $nodeColor = NodeColor::black();
-        self::assertTrue($nodeColor->isBlack());
-    }
+final class NodeColorTest extends TestCase {
+	public function testBlack(): void {
+		$nodeColor = NodeColor::black();
+		self::assertTrue( $nodeColor->isBlack() );
+	}
 
-    public function testRed(): void
-    {
-        $nodeColor = NodeColor::red();
-        self::assertTrue($nodeColor->isRed());
-    }
+	public function testRed(): void {
+		$nodeColor = NodeColor::red();
+		self::assertTrue( $nodeColor->isRed() );
+	}
 }
