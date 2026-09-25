@@ -9,6 +9,10 @@ Breaking changes:
 * `Node::intersect()`, `Node::notIntersectLeftSubtree()` and
   `Node::notIntersectRightSubtree()` take an `IntervalInterface` rather
   than a `Node`.
+* `IntervalInterface`'s point type is covariant, so its `equalTo()`,
+  `lessThan()`, `intersect()` and `merge()` accept intervals of any point
+  type in static analysis.  Implementations that declared a narrower
+  generic type for these parameters must widen it.
 
 Bug fixes:
 * Fix red-black rebalancing after removal, which corrupted the tree and

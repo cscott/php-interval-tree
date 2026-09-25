@@ -69,8 +69,7 @@ final class IntervalTree {
 	 * @return bool
 	 */
 	public function hasIntersection( IntervalInterface $interval ): bool {
-		$nodes = $this->findIntersections( $interval );
-		return $nodes->current() !== null;
+		return $this->findIntersections( $interval )->valid();
 	}
 
 	/**

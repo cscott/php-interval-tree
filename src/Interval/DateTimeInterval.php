@@ -60,7 +60,7 @@ final class DateTimeInterval implements IntervalInterface {
 	}
 
 	/**
-	 * @param IntervalInterface<TPoint> $otherInterval
+	 * @param IntervalInterface<mixed> $otherInterval
 	 * @return bool
 	 */
 	public function equalTo( IntervalInterface $otherInterval ): bool {
@@ -69,7 +69,7 @@ final class DateTimeInterval implements IntervalInterface {
 	}
 
 	/**
-	 * @param IntervalInterface<TPoint> $otherInterval
+	 * @param IntervalInterface<mixed> $otherInterval
 	 * @return bool
 	 */
 	public function lessThan( IntervalInterface $otherInterval ): bool {
@@ -81,7 +81,7 @@ final class DateTimeInterval implements IntervalInterface {
 	}
 
 	/**
-	 * @param IntervalInterface<TPoint> $otherInterval
+	 * @param IntervalInterface<mixed> $otherInterval
 	 * @return bool
 	 */
 	public function intersect( IntervalInterface $otherInterval ): bool {
@@ -89,8 +89,9 @@ final class DateTimeInterval implements IntervalInterface {
 	}
 
 	/**
-	 * @param IntervalInterface<TPoint> $otherInterval
-	 * @return IntervalInterface<TPoint>
+	 * @template TOther of DateTimeInterface
+	 * @param IntervalInterface<TOther> $otherInterval
+	 * @return IntervalInterface<TPoint|TOther>
 	 */
 	public function merge( IntervalInterface $otherInterval ): IntervalInterface {
 		return new DateTimeInterval(

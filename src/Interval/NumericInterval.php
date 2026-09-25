@@ -70,7 +70,7 @@ final class NumericInterval implements IntervalInterface {
 	}
 
 	/**
-	 * @param IntervalInterface<TPoint> $otherInterval
+	 * @param IntervalInterface<mixed> $otherInterval
 	 * @return bool
 	 */
 	public function equalTo( IntervalInterface $otherInterval ): bool {
@@ -78,7 +78,7 @@ final class NumericInterval implements IntervalInterface {
 	}
 
 	/**
-	 * @param IntervalInterface<TPoint> $otherInterval
+	 * @param IntervalInterface<mixed> $otherInterval
 	 * @return bool
 	 */
 	public function lessThan( IntervalInterface $otherInterval ): bool {
@@ -87,7 +87,7 @@ final class NumericInterval implements IntervalInterface {
 	}
 
 	/**
-	 * @param IntervalInterface<TPoint> $otherInterval
+	 * @param IntervalInterface<mixed> $otherInterval
 	 * @return bool
 	 */
 	public function intersect( IntervalInterface $otherInterval ): bool {
@@ -95,8 +95,11 @@ final class NumericInterval implements IntervalInterface {
 	}
 
 	/**
-	 * @param IntervalInterface<TPoint> $otherInterval
-	 * @return IntervalInterface<TPoint>
+	 * Phan doesn't see a method template used as a class template argument.
+	 * @suppress PhanTemplateTypeNotUsedInFunctionReturn
+	 * @template TOther of int|float
+	 * @param IntervalInterface<TOther> $otherInterval
+	 * @return IntervalInterface<TPoint|TOther>
 	 */
 	public function merge( IntervalInterface $otherInterval ): IntervalInterface {
 		return new NumericInterval(
