@@ -30,11 +30,25 @@ composer require wikimedia/interval-tree
 
 ## Usage
 
+<!--
+Every example in the Usage and Examples sections is mirrored in
+tests/phpunit/ReadmeExamplesTest.php.  If you change an example here,
+change the test to match, and vice versa.
+-->
+
+Intervals are closed: they include both endpoints, so `[1, 5]` and
+`[5, 8]` intersect.  A tree can hold several values with the same
+interval; `exist()` and `remove()` identify an entry by its interval
+*and* its value, compared with `===`.
+
 ### Interval Tree
+
+The examples in this section build on each other.
 
 #### insert(IntervalInterface $interval, mixed $value): void
 Insert new pair (interval + value) into interval tree
 ```php
+use Wikimedia\IntervalTree\Interval\NumericInterval;
 use Wikimedia\IntervalTree\IntervalTree;
 
 $tree = new IntervalTree();
@@ -44,7 +58,8 @@ $tree->insert(new NumericInterval(11, 12), 'val3');
 ```
 
 #### findIntersections(IntervalInterface $interval): Iterator\<Pair>
-Find pairs which intervals intersect with given interval
+Find pairs which intervals intersect with given interval.  Pairs are
+returned in order of their intervals.
 ```php
 $intersections = $tree->findIntersections(new NumericInterval(3, 5));
 foreach($intersections as $pair) {
@@ -58,6 +73,7 @@ foreach($intersections as $pair) {
 Returns true if interval has at least one intersection in tree
 ```php
 $tree->hasIntersection(new NumericInterval(3, 5)); // true
+$tree->hasIntersection(new NumericInterval(20, 30)); // false
 ```
 
 #### countIntersections(IntervalInterface $interval): int
@@ -66,16 +82,11 @@ Count intersections given interval in tree
 $tree->countIntersections(new NumericInterval(3, 5)); // 2
 ```
 
-#### remove(IntervalInterface $interval, $value): bool
-Remove node from tree by interval and value
-```php
-$tree->remove(new NumericInterval(11, 12), 'val3'); // true
-```
-
 #### exist(IntervalInterface $interval, $value): bool
 Returns true if interval and value exist in the tree
 ```php
 $tree->exist(new NumericInterval(11, 12), 'val3'); // true
+$tree->exist(new NumericInterval(11, 12), 'val1'); // false
 ```
 
 #### isEmpty(): bool
@@ -88,6 +99,15 @@ $tree->isEmpty(); // false
 Get number of items stored in the interval tree
 ```php
 $tree->getSize(); // 3
+```
+
+#### remove(IntervalInterface $interval, $value): bool
+Remove node from tree by interval and value.  Returns false if there is
+no such pair in the tree.
+```php
+$tree->remove(new NumericInterval(11, 12), 'val3'); // true
+$tree->remove(new NumericInterval(11, 12), 'val3'); // false
+$tree->getSize(); // 2
 ```
 
 ### Intervals
@@ -104,6 +124,9 @@ $numericInterval = NumericInterval::fromArray([1, 100]);
 
 // Instantiate numeric interval with constructor
 $numericInterval = new NumericInterval(1, 100);
+
+// Floats work too
+$numericInterval = new NumericInterval(0.5, 99.5);
 ```
 
 #### DateTime interval
@@ -118,9 +141,92 @@ $dateTimeInterval = DateTimeInterval::fromArray([
 
 // Instantiate DateTime interval with constructor
 $dateTimeInterval = new DateTimeInterval(
-    new DateTimeImmutable('2021-01-01 00:00:00'), 
+    new DateTimeImmutable('2021-01-01 00:00:00'),
     new DateTimeImmutable('2021-01-02 00:00:00')
 );
+```
+
+Both constructors throw an `InvalidArgumentException` if the low end is
+greater than the high end.
+
+## Examples
+
+<!-- Mirrored in tests/phpunit/ReadmeExamplesTest.php; keep them in sync. -->
+
+### Finding overlapping bookings
+
+```php
+use Wikimedia\IntervalTree\Interval\DateTimeInterval;
+use Wikimedia\IntervalTree\IntervalTree;
+
+$bookings = new IntervalTree();
+$bookings->insert(new DateTimeInterval(
+    new DateTimeImmutable('2026-10-01 09:00'),
+    new DateTimeImmutable('2026-10-01 09:15')
+), 'Standup');
+$bookings->insert(new DateTimeInterval(
+    new DateTimeImmutable('2026-10-01 11:00'),
+    new DateTimeImmutable('2026-10-01 12:30')
+), 'Design review');
+$bookings->insert(new DateTimeInterval(
+    new DateTimeImmutable('2026-10-01 12:00'),
+    new DateTimeImmutable('2026-10-01 13:00')
+), 'Lunch');
+
+$proposed = new DateTimeInterval(
+    new DateTimeImmutable('2026-10-01 12:15'),
+    new DateTimeImmutable('2026-10-01 12:45')
+);
+$conflicts = [];
+foreach ($bookings->findIntersections($proposed) as $pair) {
+    $conflicts[] = $pair->getValue();
+}
+// $conflicts is ['Design review', 'Lunch']
+```
+
+### Annotations on a range of text
+
+Store each annotation with the character offsets it covers, then find
+the annotations that touch a selection.  Because intervals are closed,
+annotations that end at the start of the selection, or start at its
+end, are included.
+
+```php
+use Wikimedia\IntervalTree\Interval\NumericInterval;
+use Wikimedia\IntervalTree\IntervalTree;
+
+$annotations = new IntervalTree();
+$annotations->insert(new NumericInterval(0, 4), ['type' => 'bold']);
+$annotations->insert(new NumericInterval(3, 9), ['type' => 'link', 'href' => 'Main_Page']);
+$annotations->insert(new NumericInterval(12, 20), ['type' => 'italic']);
+$annotations->insert(new NumericInterval(25, 30), ['type' => 'bold']);
+
+$types = [];
+foreach ($annotations->findIntersections(new NumericInterval(4, 12)) as $pair) {
+    $types[] = $pair->getValue()['type'];
+}
+// $types is ['bold', 'link', 'italic']
+```
+
+### Several values for the same interval
+
+```php
+use Wikimedia\IntervalTree\Interval\NumericInterval;
+use Wikimedia\IntervalTree\IntervalTree;
+
+$tree = new IntervalTree();
+$tree->insert(new NumericInterval(1, 5), 'a');
+$tree->insert(new NumericInterval(1, 5), 'b');
+$tree->insert(new NumericInterval(1, 5), 'c');
+$tree->countIntersections(new NumericInterval(2, 3)); // 3
+
+// Values are compared strictly, so this doesn't match 'a', 'b' or 'c'
+$tree->remove(new NumericInterval(1, 5), 0); // false
+
+$tree->remove(new NumericInterval(1, 5), 'b'); // true
+$tree->exist(new NumericInterval(1, 5), 'a'); // true
+$tree->exist(new NumericInterval(1, 5), 'b'); // false
+$tree->countIntersections(new NumericInterval(2, 3)); // 2
 ```
 
 ## Running tests
