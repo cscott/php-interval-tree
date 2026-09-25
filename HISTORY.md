@@ -34,6 +34,8 @@ Bug fixes:
   parameter.
 
 Other changes:
+* Document what a custom `IntervalInterface` implementation must do to be
+  stored in a tree.
 * Adopt the MediaWiki coding conventions and library layout.
 
 ## v2.1.0

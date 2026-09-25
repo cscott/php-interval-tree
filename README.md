@@ -113,6 +113,8 @@ $tree->getSize(); // 2
 ### Intervals
 
 There are numeric and DateTimeInterface-based interval types included.
+You can also store your own kind of interval by implementing
+`IntervalInterface`; see [Custom interval types](#custom-interval-types).
 
 #### Numeric interval
 
@@ -148,6 +150,28 @@ $dateTimeInterval = new DateTimeInterval(
 
 Both constructors throw an `InvalidArgumentException` if the low end is
 greater than the high end.
+
+### Custom interval types
+
+To store your own kind of interval, implement `IntervalInterface`:
+`getLow()`, `getHigh()`, `lessThan()`, `equalTo()` and `intersect()`.
+The tree relies on the following:
+
+- Points are compared with `<` and `>`, so they must be values PHP compares
+  sensibly (ints, floats, `DateTimeInterface` objects, ...), and `getLow()`
+  must not be greater than `getHigh()`.
+- `lessThan()` is a strict weak ordering, and `equalTo()` is true exactly
+  when neither interval is less than the other.  The ordering needn't be by
+  low point; `findIntersections()` returns results in this order.
+- `intersect()` may only be true if the closed ranges `[getLow(), getHigh()]`
+  of the two intervals overlap; the tree uses those ranges to skip
+  subtrees.  Otherwise `intersect()` can mean whatever you need, for
+  example half-open intervals, or intervals that must also match in some
+  other field.
+- `intersect()` is called on the stored interval with the query interval as
+  its argument.  The query can be of a different class, so different kinds
+  of query can have different meanings.
+- Intervals must not change while they're in a tree.
 
 ## Examples
 
