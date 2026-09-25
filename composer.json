@@ -1,42 +1,71 @@
 {
-    "name": "dan-on/php-interval-tree",
-    "description": "Is an implementation of interval binary search tree according to Thomas Cormen book \"Introduction to Algorithms\".",
-    "type": "library",
-    "license": "MIT",
-    "authors": [
-        {
-            "name": "Daniil Akhmetov",
-            "email": "me@dan1.ru"
-        }
-    ],
-    "autoload": {
-        "psr-4": {
-            "Danon\\IntervalTree\\": "src/",
-            "Danon\\IntervalTree\\Tests\\": "tests/"
-        }
-    },
-    "require": {
-        "php": ">=8.1"
-    },
-    "require-dev": {
-        "phpunit/phpunit": "^9",
-        "phpstan/phpstan": "^1.3.3",
-        "vimeo/psalm": "^6.18",
-        "phpbench/phpbench": "^1.0",
-        "phpmd/phpmd": "^2.10",
-        "phpunit/php-code-coverage": "^9.2",
-        "mediawiki/mediawiki-codesniffer": "52.0.1",
-        "mediawiki/mediawiki-phan-config": "0.20.0"
-    },
-    "scripts": {
-        "tests": "./vendor/bin/phpunit",
-        "analyze": "./vendor/bin/phpcs -sp && @phan && ./vendor/bin/psalm && ./vendor/bin/phpstan && ./vendor/bin/phpmd src text phpmd.ruleset.xml",
-        "bench": "./vendor/bin/phpbench run --report=aggregate",
-        "phan": "phan --allow-polyfill-parser"
-    },
-    "config": {
-        "allow-plugins": {
-            "dealerdirect/phpcodesniffer-composer-installer": true
-        }
-    }
+	"name": "dan-on/php-interval-tree",
+	"description": "Is an implementation of interval binary search tree according to Thomas Cormen book \"Introduction to Algorithms\".",
+	"type": "library",
+	"license": "MIT",
+	"authors": [
+		{
+			"name": "Daniil Akhmetov",
+			"email": "me@dan1.ru"
+		},
+		{
+			"name": "C. Scott Ananian",
+			"email": "cscott@cscott.net"
+		}
+	],
+	"autoload": {
+		"psr-4": {
+			"Danon\\IntervalTree\\": "src/"
+		}
+	},
+	"autoload-dev": {
+		"psr-4": {
+			"Danon\\IntervalTree\\Tests\\": "tests/phpunit/",
+			"Danon\\IntervalTree\\Tests\\Benchmark\\": "tests/Benchmark/"
+		}
+	},
+	"require": {
+		"php": ">=8.1"
+	},
+	"require-dev": {
+		"mediawiki/mediawiki-codesniffer": "52.0.1",
+		"mediawiki/mediawiki-phan-config": "0.20.0",
+		"mediawiki/minus-x": "2.0.1",
+		"ockcyp/covers-validator": "1.7.0",
+		"php-parallel-lint/php-console-highlighter": "1.0.0",
+		"php-parallel-lint/php-parallel-lint": "1.4.0",
+		"phpbench/phpbench": "^1.0",
+		"phpmd/phpmd": "^2.10",
+		"phpstan/phpstan": "^1.3.3",
+		"phpunit/phpunit": "10.5.63",
+		"vimeo/psalm": "^6.18"
+	},
+	"scripts": {
+		"test": [
+			"parallel-lint . --exclude vendor",
+			"phpunit",
+			"covers-validator",
+			"phpcs -sp",
+			"@phan",
+			"minus-x check .",
+			"@analyze"
+		],
+		"analyze": [
+			"psalm",
+			"phpstan",
+			"phpmd src text phpmd.ruleset.xml"
+		],
+		"phan": "phan --allow-polyfill-parser",
+		"cover": "phpunit --coverage-html coverage",
+		"fix": [
+			"phpcbf",
+			"minus-x fix ."
+		],
+		"bench": "phpbench run --report=aggregate"
+	},
+	"config": {
+		"allow-plugins": {
+			"dealerdirect/phpcodesniffer-composer-installer": true
+		}
+	}
 }

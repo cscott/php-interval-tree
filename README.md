@@ -117,8 +117,21 @@ $dateTimeInterval = new DateTimeInterval(
 );
 ```
 
-## Tests
+## Running tests
 
 ```
-./vendor/bin/phpunit
+composer install
+composer test
 ```
+
+`composer test` runs the unit tests together with the MediaWiki coding
+standard checks (phpcs, phan) and static analysis (Psalm, PHPStan, PHPMD).
+Benchmarks are run with `composer bench`.
+
+## History
+
+This library was written by Daniil Akhmetov and published as
+[dan-on/php-interval-tree](https://github.com/dan-on/php-interval-tree).
+This fork fixes several correctness bugs in removal and lookup, and
+follows the [MediaWiki coding conventions](https://www.mediawiki.org/wiki/Manual:Coding_conventions/PHP).
+See [HISTORY.md](HISTORY.md) for details.

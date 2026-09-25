@@ -1,4 +1,7 @@
-vendor
-.idea
-composer.lock
-.phpunit.cache
+/coverage/
+/doc/
+/vendor/
+/.idea
+/.phpunit.cache/
+/.phpunit.result.cache
+/composer.lock

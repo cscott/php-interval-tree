@@ -31,8 +31,5 @@ jobs:
       - name: Install dependencies
         run: composer install --prefer-dist --no-progress
 
-      - name: Run test suite
-        run: composer run-script tests
-
-      - name: Analyze code
-        run: composer run-script analyze
+      - name: Run tests and static analysis
+        run: composer test

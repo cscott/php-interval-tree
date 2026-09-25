@@ -24,7 +24,7 @@ final class IntervalTreeRandomizedTest extends TestCase {
 	/**
 	 * @return array<string, array{int}>
 	 */
-	public function provideSeeds(): array {
+	public static function provideSeeds(): array {
 		$seeds = [];
 		for ( $seed = 1; $seed <= 50; $seed++ ) {
 			$seeds["seed $seed"] = [ $seed ];
