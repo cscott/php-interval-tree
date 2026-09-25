@@ -69,7 +69,7 @@ $tree->remove(new NumericInterval(11, 12), 'val3'); // true
 #### exist(IntervalInterface $interval, $value): bool
 Returns true if interval and value exist in the tree
 ```php
-$tree->exists(new NumericInterval(11, 12), 'val3'); // true
+$tree->exist(new NumericInterval(11, 12), 'val3'); // true
 ```
 
 #### isEmpty(): bool
