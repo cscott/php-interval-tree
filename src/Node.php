@@ -46,9 +46,19 @@ final class Node {
 	private $pair;
 
 	/**
-	 * @var null|IntervalInterface<TPoint>
+	 * The lowest low point in this node's subtree, or null for the nil node.
+	 * (Phan doesn't carry TPoint through IntervalInterface::getLow().)
+	 * @var TPoint|null
+	 * @phan-var mixed
 	 */
-	private $max;
+	private $minLow;
+
+	/**
+	 * The highest high point in this node's subtree, or null for the nil node.
+	 * @var TPoint|null
+	 * @phan-var mixed
+	 */
+	private $maxHigh;
 
 	/**
 	 * Phan can't infer the template types of a constructor without parameters.
@@ -66,7 +76,8 @@ final class Node {
 	public static function withPair( Pair $pair ): self {
 		$self = new self();
 		$self->pair = $pair;
-		$self->max = $self->pair->getInterval();
+		$self->minLow = $pair->getInterval()->getLow();
+		$self->maxHigh = $pair->getInterval()->getHigh();
 
 		return $self;
 	}
@@ -174,33 +185,58 @@ final class Node {
 	}
 
 	/**
+	 * Recompute the lowest low and highest high points of this node's
+	 * subtree from its own interval and its children's.
+	 *
 	 * @return void
 	 */
 	public function updateMax(): void {
-		$this->max = $this->getPair()->getInterval();
-		if ( $this->getRight()->max !== null ) {
-			$this->max = $this->max->merge( $this->getRight()->max );
-		}
-		if ( $this->getLeft()->max !== null ) {
-			$this->max = $this->max->merge( $this->getLeft()->max );
+		$interval = $this->getPair()->getInterval();
+		$this->minLow = $interval->getLow();
+		$this->maxHigh = $interval->getHigh();
+		foreach ( [ $this->getLeft(), $this->getRight() ] as $child ) {
+			if ( $child->maxHigh === null ) {
+				// The nil node
+				continue;
+			}
+			if ( $child->minLow < $this->minLow ) {
+				$this->minLow = $child->minLow;
+			}
+			if ( $child->maxHigh > $this->maxHigh ) {
+				$this->maxHigh = $child->maxHigh;
+			}
 		}
 	}
 
 	/**
+	 * Returns true if no interval in the left subtree can intersect the
+	 * given one: the subtree's intervals all lie outside the closed range
+	 * [$interval->getLow(), $interval->getHigh()].
+	 *
 	 * @param IntervalInterface<TPoint> $interval
 	 * @return bool
 	 */
 	public function notIntersectLeftSubtree( IntervalInterface $interval ): bool {
-		$high = $this->getLeft()->max->getHigh() ?? $this->getLeft()->getPair()->getInterval()->getHigh();
-		return $high < $interval->getLow();
+		return $this->outsideSubtree( $this->getLeft(), $interval );
 	}
 
 	/**
+	 * Returns true if no interval in the right subtree can intersect the
+	 * given one; see notIntersectLeftSubtree().
+	 *
 	 * @param IntervalInterface<TPoint> $interval
 	 * @return bool
 	 */
 	public function notIntersectRightSubtree( IntervalInterface $interval ): bool {
-		$low = $this->getRight()->max->getLow() ?? $this->getRight()->getPair()->getInterval()->getLow();
-		return $interval->getHigh() < $low;
+		return $this->outsideSubtree( $this->getRight(), $interval );
+	}
+
+	/**
+	 * @param Node<TPoint, TValue> $subtree
+	 * @param IntervalInterface<TPoint> $interval
+	 * @return bool
+	 */
+	private function outsideSubtree( Node $subtree, IntervalInterface $interval ): bool {
+		return $subtree->maxHigh < $interval->getLow() || $interval->getHigh() < $subtree->minLow;
 	}
 }

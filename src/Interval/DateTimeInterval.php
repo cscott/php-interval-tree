@@ -49,13 +49,11 @@ final class DateTimeInterval implements IntervalInterface {
 	}
 
 	/**
-	 * Phan doesn't match a method template with the one in the interface.
-	 * @suppress PhanParamSignatureMismatch
 	 * @template TFromPoint of DateTimeInterface
 	 * @param TFromPoint[] $interval
-	 * @return IntervalInterface<TFromPoint>
+	 * @return DateTimeInterval<TFromPoint>
 	 */
-	public static function fromArray( array $interval ): IntervalInterface {
+	public static function fromArray( array $interval ): DateTimeInterval {
 		if ( count( $interval ) !== 2 ) {
 			throw new InvalidArgumentException( 'Wrong interval array' );
 		}

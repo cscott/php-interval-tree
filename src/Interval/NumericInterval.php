@@ -48,14 +48,11 @@ final class NumericInterval implements IntervalInterface {
 	}
 
 	/**
-	 * Phan doesn't see a method template used as a class template argument,
-	 * nor match it with the one in the interface.
-	 * @suppress PhanTemplateTypeNotUsedInFunctionReturn, PhanParamSignatureMismatch
 	 * @template TFromPoint of int|float
 	 * @param TFromPoint[] $interval
-	 * @return IntervalInterface<TFromPoint>
+	 * @return NumericInterval<TFromPoint>
 	 */
-	public static function fromArray( array $interval ): IntervalInterface {
+	public static function fromArray( array $interval ): NumericInterval {
 		if ( count( $interval ) !== 2 ) {
 			throw new InvalidArgumentException( 'Wrong interval array' );
 		}

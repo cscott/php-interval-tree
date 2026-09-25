@@ -12,6 +12,10 @@ Breaking changes:
 * `Node::intersect()`, `Node::notIntersectLeftSubtree()` and
   `Node::notIntersectRightSubtree()` take an `IntervalInterface` rather
   than a `Node`.
+* `IntervalInterface` no longer declares `__construct()`, `fromArray()` or
+  `merge()`, so that classes with other constructors can implement it.
+  `NumericInterval` and `DateTimeInterval` still have all three, and their
+  `fromArray()` now returns the concrete class.
 * `IntervalInterface`'s point type is covariant, so its `equalTo()`,
   `lessThan()`, `intersect()` and `merge()` accept intervals of any point
   type in static analysis.  Implementations that declared a narrower

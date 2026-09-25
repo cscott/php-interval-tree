@@ -20,26 +20,6 @@ namespace Wikimedia\IntervalTree\Interval;
  */
 interface IntervalInterface {
 	/**
-	 * Constructors are exempt from variance rules, but phan doesn't know
-	 * that, so give it a type without the covariant template.
-	 * @suppress PhanGenericConstructorTypes
-	 * @param TPoint $low
-	 * @param TPoint $high
-	 * @phan-param mixed $low
-	 * @phan-param mixed $high
-	 */
-	public function __construct( $low, $high );
-
-	/**
-	 * Phan doesn't see a method template used as a class template argument.
-	 * @suppress PhanTemplateTypeNotUsedInFunctionReturn
-	 * @template TFromPoint
-	 * @param TFromPoint[] $interval
-	 * @return IntervalInterface<TFromPoint>
-	 */
-	public static function fromArray( array $interval ): IntervalInterface;
-
-	/**
 	 * @return TPoint
 	 */
 	public function getLow();
@@ -66,13 +46,4 @@ interface IntervalInterface {
 	 * @return bool
 	 */
 	public function intersect( IntervalInterface $otherInterval ): bool;
-
-	/**
-	 * Phan doesn't see a method template used as a class template argument.
-	 * @suppress PhanTemplateTypeNotUsedInFunctionReturn
-	 * @template TOther
-	 * @param IntervalInterface<TOther> $otherInterval
-	 * @return IntervalInterface<TPoint|TOther>
-	 */
-	public function merge( IntervalInterface $otherInterval ): IntervalInterface;
 }
