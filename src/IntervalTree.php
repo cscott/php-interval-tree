@@ -1,12 +1,23 @@
 <?php
+/**
+ * Copyright (c) 2021 Akhmetov Daniil
+ *
+ * Originally written by Daniil Akhmetov as part of
+ * https://github.com/dan-on/php-interval-tree
+ *
+ * SPDX-License-Identifier: MIT
+ * See the LICENSE file for the full license text.
+ *
+ * @file
+ */
 
 declare( strict_types=1 );
 
-namespace Danon\IntervalTree;
+namespace Wikimedia\IntervalTree;
 
-use Danon\IntervalTree\Interval\IntervalInterface;
 use Iterator;
 use LogicException;
+use Wikimedia\IntervalTree\Interval\IntervalInterface;
 
 /**
  * @template TPoint

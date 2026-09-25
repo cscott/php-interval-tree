@@ -1,15 +1,26 @@
 <?php
+/**
+ * Copyright (c) 2021 Akhmetov Daniil
+ *
+ * Originally written by Daniil Akhmetov as part of
+ * https://github.com/dan-on/php-interval-tree
+ *
+ * SPDX-License-Identifier: MIT
+ * See the LICENSE file for the full license text.
+ *
+ * @file
+ */
 
 declare( strict_types=1 );
 
-namespace Danon\IntervalTree\Tests;
+namespace Wikimedia\IntervalTree\Tests;
 
-use Danon\IntervalTree\Interval\NumericInterval;
-use Danon\IntervalTree\IntervalTree;
 use PHPUnit\Framework\TestCase;
+use Wikimedia\IntervalTree\Interval\NumericInterval;
+use Wikimedia\IntervalTree\IntervalTree;
 
 /**
- * @covers \Danon\IntervalTree\IntervalTree
+ * @covers \Wikimedia\IntervalTree\IntervalTree
  */
 final class IntervalTreeTest extends TestCase {
 	private const TREE_INTERVALS = [
@@ -32,10 +43,10 @@ final class IntervalTreeTest extends TestCase {
 	}
 
 	/**
-	 * @uses \Danon\IntervalTree\Interval\NumericInterval
-	 * @uses \Danon\IntervalTree\Node
-	 * @uses \Danon\IntervalTree\NodeColor
-	 * @uses \Danon\IntervalTree\Pair
+	 * @uses \Wikimedia\IntervalTree\Interval\NumericInterval
+	 * @uses \Wikimedia\IntervalTree\Node
+	 * @uses \Wikimedia\IntervalTree\NodeColor
+	 * @uses \Wikimedia\IntervalTree\Pair
 	 */
 	public function testFindIntersections(): void {
 		$checkInterval = [ 2, 3 ];
@@ -54,10 +65,10 @@ final class IntervalTreeTest extends TestCase {
 	}
 
 	/**
-	 * @uses \Danon\IntervalTree\Interval\NumericInterval
-	 * @uses \Danon\IntervalTree\Node
-	 * @uses \Danon\IntervalTree\NodeColor
-	 * @uses \Danon\IntervalTree\Pair
+	 * @uses \Wikimedia\IntervalTree\Interval\NumericInterval
+	 * @uses \Wikimedia\IntervalTree\Node
+	 * @uses \Wikimedia\IntervalTree\NodeColor
+	 * @uses \Wikimedia\IntervalTree\Pair
 	 */
 	public function testFindAnyIntersection(): void {
 		self::assertTrue( $this->tree->hasIntersection( NumericInterval::fromArray( [ 2, 3 ] ) ) );
@@ -74,10 +85,10 @@ final class IntervalTreeTest extends TestCase {
 	}
 
 	/**
-	 * @uses \Danon\IntervalTree\Interval\NumericInterval
-	 * @uses \Danon\IntervalTree\Node
-	 * @uses \Danon\IntervalTree\NodeColor
-	 * @uses \Danon\IntervalTree\Pair
+	 * @uses \Wikimedia\IntervalTree\Interval\NumericInterval
+	 * @uses \Wikimedia\IntervalTree\Node
+	 * @uses \Wikimedia\IntervalTree\NodeColor
+	 * @uses \Wikimedia\IntervalTree\Pair
 	 */
 	public function testRemove(): void {
 		$initialSize = $this->tree->getSize();
@@ -103,10 +114,10 @@ final class IntervalTreeTest extends TestCase {
 	}
 
 	/**
-	 * @uses \Danon\IntervalTree\Interval\NumericInterval
-	 * @uses \Danon\IntervalTree\Node
-	 * @uses \Danon\IntervalTree\NodeColor
-	 * @uses \Danon\IntervalTree\Pair
+	 * @uses \Wikimedia\IntervalTree\Interval\NumericInterval
+	 * @uses \Wikimedia\IntervalTree\Node
+	 * @uses \Wikimedia\IntervalTree\NodeColor
+	 * @uses \Wikimedia\IntervalTree\Pair
 	 */
 	public function testIsEmpty(): void {
 		self::assertTrue( ( new IntervalTree() )->isEmpty() );
@@ -114,10 +125,10 @@ final class IntervalTreeTest extends TestCase {
 	}
 
 	/**
-	 * @uses \Danon\IntervalTree\Interval\NumericInterval
-	 * @uses \Danon\IntervalTree\Node
-	 * @uses \Danon\IntervalTree\NodeColor
-	 * @uses \Danon\IntervalTree\Pair
+	 * @uses \Wikimedia\IntervalTree\Interval\NumericInterval
+	 * @uses \Wikimedia\IntervalTree\Node
+	 * @uses \Wikimedia\IntervalTree\NodeColor
+	 * @uses \Wikimedia\IntervalTree\Pair
 	 */
 	public function testQueriesOnNewEmptyTree(): void {
 		/** @var IntervalTree<int, string> $tree */
@@ -132,10 +143,10 @@ final class IntervalTreeTest extends TestCase {
 	}
 
 	/**
-	 * @uses \Danon\IntervalTree\Interval\NumericInterval
-	 * @uses \Danon\IntervalTree\Node
-	 * @uses \Danon\IntervalTree\NodeColor
-	 * @uses \Danon\IntervalTree\Pair
+	 * @uses \Wikimedia\IntervalTree\Interval\NumericInterval
+	 * @uses \Wikimedia\IntervalTree\Node
+	 * @uses \Wikimedia\IntervalTree\NodeColor
+	 * @uses \Wikimedia\IntervalTree\Pair
 	 */
 	public function testQueriesAfterRemovingEverything(): void {
 		foreach ( self::TREE_INTERVALS as $interval ) {
@@ -157,10 +168,10 @@ final class IntervalTreeTest extends TestCase {
 	}
 
 	/**
-	 * @uses \Danon\IntervalTree\Interval\NumericInterval
-	 * @uses \Danon\IntervalTree\Node
-	 * @uses \Danon\IntervalTree\NodeColor
-	 * @uses \Danon\IntervalTree\Pair
+	 * @uses \Wikimedia\IntervalTree\Interval\NumericInterval
+	 * @uses \Wikimedia\IntervalTree\Node
+	 * @uses \Wikimedia\IntervalTree\NodeColor
+	 * @uses \Wikimedia\IntervalTree\Pair
 	 */
 	public function testRemoveWithFalsyValue(): void {
 		/** @var IntervalTree<int, int|string> $tree */
@@ -180,10 +191,10 @@ final class IntervalTreeTest extends TestCase {
 	}
 
 	/**
-	 * @uses \Danon\IntervalTree\Interval\NumericInterval
-	 * @uses \Danon\IntervalTree\Node
-	 * @uses \Danon\IntervalTree\NodeColor
-	 * @uses \Danon\IntervalTree\Pair
+	 * @uses \Wikimedia\IntervalTree\Interval\NumericInterval
+	 * @uses \Wikimedia\IntervalTree\Node
+	 * @uses \Wikimedia\IntervalTree\NodeColor
+	 * @uses \Wikimedia\IntervalTree\Pair
 	 */
 	public function testFindDuplicateIntervalInLeftSubtree(): void {
 		/** @var IntervalTree<int, string> $tree */

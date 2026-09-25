@@ -1,13 +1,24 @@
 <?php
+/**
+ * Copyright (c) 2021 Akhmetov Daniil
+ *
+ * Originally written by Daniil Akhmetov as part of
+ * https://github.com/dan-on/php-interval-tree
+ *
+ * SPDX-License-Identifier: MIT
+ * See the LICENSE file for the full license text.
+ *
+ * @file
+ */
 
-namespace Danon\IntervalTree\Tests;
+namespace Wikimedia\IntervalTree\Tests;
 
-use Danon\IntervalTree\Interval\NumericInterval;
-use Danon\IntervalTree\Pair;
 use PHPUnit\Framework\TestCase;
+use Wikimedia\IntervalTree\Interval\NumericInterval;
+use Wikimedia\IntervalTree\Pair;
 
 /**
- * @covers \Danon\IntervalTree\Pair
+ * @covers \Wikimedia\IntervalTree\Pair
  */
 final class PairTest extends TestCase {
 	private const EXAMPLE_INTERVAL = [ 1, 5 ];
@@ -28,7 +39,7 @@ final class PairTest extends TestCase {
 	}
 
 	/**
-	 * @uses \Danon\IntervalTree\Interval\NumericInterval
+	 * @uses \Wikimedia\IntervalTree\Interval\NumericInterval
 	 */
 	public function testGetInterval(): void {
 		self::assertTrue(
@@ -39,7 +50,7 @@ final class PairTest extends TestCase {
 	}
 
 	/**
-	 * @uses \Danon\IntervalTree\Interval\NumericInterval
+	 * @uses \Wikimedia\IntervalTree\Interval\NumericInterval
 	 */
 	public function testGetValue(): void {
 		self::assertSame( self::EXAMPLE_VALUE, $this->pair->getValue() );

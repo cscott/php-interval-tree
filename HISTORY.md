@@ -3,6 +3,9 @@
 ## v3.0.0 (unreleased)
 
 Breaking changes:
+* Forked from `dan-on/php-interval-tree` and renamed: the package is now
+  `wikimedia/interval-tree` and the namespace `Wikimedia\IntervalTree`
+  (previously `Danon\IntervalTree`).
 * Require PHP 8.1 or later.
 * `exist()` and `remove()` compare values strictly (`===`).  Previously a
   falsy value such as `0`, `''` or `null` matched any value.
@@ -31,5 +34,6 @@ Other changes:
 
 ## v2.1.0
 
-* Last release of the upstream
-  [dan-on/php-interval-tree](https://github.com/dan-on/php-interval-tree).
+* Last release of
+  [dan-on/php-interval-tree](https://github.com/dan-on/php-interval-tree),
+  from which this library was forked.

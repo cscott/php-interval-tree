@@ -1,13 +1,24 @@
 <?php
+/**
+ * Copyright (c) 2021 Akhmetov Daniil
+ *
+ * Originally written by Daniil Akhmetov as part of
+ * https://github.com/dan-on/php-interval-tree
+ *
+ * SPDX-License-Identifier: MIT
+ * See the LICENSE file for the full license text.
+ *
+ * @file
+ */
 
 declare( strict_types=1 );
 
-namespace Danon\IntervalTree\Tests\Benchmark;
+namespace Wikimedia\IntervalTree\Tests\Benchmark;
 
-use Danon\IntervalTree\Interval\IntervalInterface;
-use Danon\IntervalTree\Interval\NumericInterval;
 use Exception;
 use InvalidArgumentException;
+use Wikimedia\IntervalTree\Interval\IntervalInterface;
+use Wikimedia\IntervalTree\Interval\NumericInterval;
 
 trait GenerateIntervalTrait {
 	/**

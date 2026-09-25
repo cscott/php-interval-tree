@@ -1,12 +1,23 @@
 <?php
+/**
+ * Copyright (c) 2021 Akhmetov Daniil
+ *
+ * Originally written by Daniil Akhmetov as part of
+ * https://github.com/dan-on/php-interval-tree
+ *
+ * SPDX-License-Identifier: MIT
+ * See the LICENSE file for the full license text.
+ *
+ * @file
+ */
 
-namespace Danon\IntervalTree\Tests;
+namespace Wikimedia\IntervalTree\Tests;
 
-use Danon\IntervalTree\NodeColor;
 use PHPUnit\Framework\TestCase;
+use Wikimedia\IntervalTree\NodeColor;
 
 /**
- * @covers \Danon\IntervalTree\NodeColor
+ * @covers \Wikimedia\IntervalTree\NodeColor
  */
 final class NodeColorTest extends TestCase {
 	public function testBlack(): void {

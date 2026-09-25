@@ -1,5 +1,5 @@
 # Doxyfile <https://www.doxygen.nl/manual/config.html>
-PROJECT_NAME           = "php-interval-tree"
+PROJECT_NAME           = "IntervalTree"
 PROJECT_BRIEF          = "Augmented red-black interval tree"
 OUTPUT_DIRECTORY       = doc
 JAVADOC_AUTOBRIEF      = YES

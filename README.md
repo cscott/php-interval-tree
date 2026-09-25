@@ -1,9 +1,15 @@
-# PHP Interval tree
-[![Latest Stable Version](http://poser.pugx.org/dan-on/php-interval-tree/v)](https://packagist.org/packages/dan-on/php-interval-tree) [![Total Downloads](http://poser.pugx.org/dan-on/php-interval-tree/downloads)](https://packagist.org/packages/dan-on/php-interval-tree) [![License](http://poser.pugx.org/dan-on/php-interval-tree/license)](https://packagist.org/packages/dan-on/php-interval-tree) [![PHP Version Require](http://poser.pugx.org/dan-on/php-interval-tree/require/php)](https://packagist.org/packages/dan-on/php-interval-tree)
+# IntervalTree
+[![Latest Stable Version](https://poser.pugx.org/wikimedia/interval-tree/v)](https://packagist.org/packages/wikimedia/interval-tree) [![License](https://poser.pugx.org/wikimedia/interval-tree/license)](https://packagist.org/packages/wikimedia/interval-tree) [![PHP Version Require](https://poser.pugx.org/wikimedia/interval-tree/require/php)](https://packagist.org/packages/wikimedia/interval-tree)
+
+> **IntervalTree was created by [Daniil Akhmetov](https://github.com/dan-on)**
+> and first published as
+> [dan-on/php-interval-tree](https://github.com/dan-on/php-interval-tree).
+> This package is a fork of his work: the design, the API and nearly all of
+> the code are his.  Thank you, Daniil!
 
 ## Overview
 
-Package **dan-on/php-interval-tree** is an implementation of self balancing binary search tree data structure called Red-Black Tree.
+Package **wikimedia/interval-tree** is an implementation of self balancing binary search tree data structure called Red-Black Tree.
 
 Based on interval tree described in "Introduction to Algorithms 3rd Edition", published by Thomas H. Cormen, Charles E. Leiserson, Ronald L. Rivest, and Clifford Stein.
 
@@ -19,7 +25,7 @@ Based on interval tree described in "Introduction to Algorithms 3rd Edition", pu
 ## Installing via Composer
 
 ```
-composer require dan-on/php-interval-tree
+composer require wikimedia/interval-tree
 ```
 
 ## Usage
@@ -29,7 +35,7 @@ composer require dan-on/php-interval-tree
 #### insert(IntervalInterface $interval, mixed $value): void
 Insert new pair (interval + value) into interval tree
 ```php
-use Danon\IntervalTree\IntervalTree;
+use Wikimedia\IntervalTree\IntervalTree;
 
 $tree = new IntervalTree();
 $tree->insert(new NumericInterval(1, 10), 'val1');
@@ -91,7 +97,7 @@ There are numeric and DateTimeInterface-based interval types included.
 #### Numeric interval
 
 ```php
-use Danon\IntervalTree\Interval\NumericInterval;
+use Wikimedia\IntervalTree\Interval\NumericInterval;
 
 // Instantiate numeric interval from array
 $numericInterval = NumericInterval::fromArray([1, 100]);
@@ -102,7 +108,7 @@ $numericInterval = new NumericInterval(1, 100);
 
 #### DateTime interval
 ```php
-use Danon\IntervalTree\Interval\DateTimeInterval;
+use Wikimedia\IntervalTree\Interval\DateTimeInterval;
 
 // Instantiate DateTime interval from array
 $dateTimeInterval = DateTimeInterval::fromArray([
@@ -128,10 +134,27 @@ composer test
 standard checks (phpcs, phan) and static analysis (Psalm, PHPStan, PHPMD).
 Benchmarks are run with `composer bench`.
 
+## Credits and license
+
+IntervalTree was written by **Daniil Akhmetov**
+([@dan-on](https://github.com/dan-on)), who designed its API and wrote
+the red-black tree, the interval types, the tests and the benchmarks in
+[dan-on/php-interval-tree](https://github.com/dan-on/php-interval-tree).
+If this library is useful to you, please consider giving his original
+repository a star.
+
+Copyright (c) 2021 Akhmetov Daniil.  Released under the MIT license; see
+[LICENSE](LICENSE).  Later changes are contributed under the same license.
+
 ## History
 
-This library was written by Daniil Akhmetov and published as
-[dan-on/php-interval-tree](https://github.com/dan-on/php-interval-tree).
-This fork fixes several correctness bugs in removal and lookup, and
-follows the [MediaWiki coding conventions](https://www.mediawiki.org/wiki/Manual:Coding_conventions/PHP).
-See [HISTORY.md](HISTORY.md) for details.
+This library is a fork of
+[dan-on/php-interval-tree](https://github.com/dan-on/php-interval-tree)
+by Daniil Akhmetov.  The fork fixes several correctness bugs in removal
+and lookup, follows the
+[MediaWiki coding conventions](https://www.mediawiki.org/wiki/Manual:Coding_conventions/PHP),
+and renames the package to `wikimedia/interval-tree` and the namespace to
+`Wikimedia\IntervalTree`.  See [HISTORY.md](HISTORY.md) for details.
+
+Additional documentation about this library can be found on
+[mediawiki.org](https://www.mediawiki.org/wiki/IntervalTree).

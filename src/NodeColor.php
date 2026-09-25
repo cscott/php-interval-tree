@@ -1,8 +1,19 @@
 <?php
+/**
+ * Copyright (c) 2021 Akhmetov Daniil
+ *
+ * Originally written by Daniil Akhmetov as part of
+ * https://github.com/dan-on/php-interval-tree
+ *
+ * SPDX-License-Identifier: MIT
+ * See the LICENSE file for the full license text.
+ *
+ * @file
+ */
 
 declare( strict_types=1 );
 
-namespace Danon\IntervalTree;
+namespace Wikimedia\IntervalTree;
 
 final class NodeColor {
 	public const COLOR_RED = 0;

@@ -1,8 +1,9 @@
 {
-	"name": "dan-on/php-interval-tree",
-	"description": "Is an implementation of interval binary search tree according to Thomas Cormen book \"Introduction to Algorithms\".",
+	"name": "wikimedia/interval-tree",
+	"description": "Interval tree: an augmented red-black tree for finding intersecting intervals, after Cormen et al., \"Introduction to Algorithms\".",
 	"type": "library",
 	"license": "MIT",
+	"homepage": "https://www.mediawiki.org/wiki/IntervalTree",
 	"authors": [
 		{
 			"name": "Daniil Akhmetov",
@@ -15,13 +16,13 @@
 	],
 	"autoload": {
 		"psr-4": {
-			"Danon\\IntervalTree\\": "src/"
+			"Wikimedia\\IntervalTree\\": "src/"
 		}
 	},
 	"autoload-dev": {
 		"psr-4": {
-			"Danon\\IntervalTree\\Tests\\": "tests/phpunit/",
-			"Danon\\IntervalTree\\Tests\\Benchmark\\": "tests/Benchmark/"
+			"Wikimedia\\IntervalTree\\Tests\\": "tests/phpunit/",
+			"Wikimedia\\IntervalTree\\Tests\\Benchmark\\": "tests/Benchmark/"
 		}
 	},
 	"require": {

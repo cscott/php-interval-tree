@@ -1,20 +1,31 @@
 <?php
+/**
+ * Copyright (c) 2021 Akhmetov Daniil
+ *
+ * Originally written by Daniil Akhmetov as part of
+ * https://github.com/dan-on/php-interval-tree
+ *
+ * SPDX-License-Identifier: MIT
+ * See the LICENSE file for the full license text.
+ *
+ * @file
+ */
 
-namespace Danon\IntervalTree\Tests;
+namespace Wikimedia\IntervalTree\Tests;
 
-use Danon\IntervalTree\Interval\NumericInterval;
-use Danon\IntervalTree\Node;
-use Danon\IntervalTree\NodeColor;
-use Danon\IntervalTree\Pair;
 use PHPUnit\Framework\TestCase;
+use Wikimedia\IntervalTree\Interval\NumericInterval;
+use Wikimedia\IntervalTree\Node;
+use Wikimedia\IntervalTree\NodeColor;
+use Wikimedia\IntervalTree\Pair;
 
 /**
- * @covers \Danon\IntervalTree\Node
+ * @covers \Wikimedia\IntervalTree\Node
  */
 class NodeTest extends TestCase {
 	/**
-	 * @uses \Danon\IntervalTree\Pair
-	 * @uses \Danon\IntervalTree\Interval\NumericInterval
+	 * @uses \Wikimedia\IntervalTree\Pair
+	 * @uses \Wikimedia\IntervalTree\Interval\NumericInterval
 	 */
 	public function testWithPair(): void {
 		$node = Node::withPair( new Pair( NumericInterval::fromArray( [ 1, 5 ] ), 'val' ) );
@@ -24,7 +35,7 @@ class NodeTest extends TestCase {
 	}
 
 	/**
-	 * @uses \Danon\IntervalTree\NodeColor
+	 * @uses \Wikimedia\IntervalTree\NodeColor
 	 */
 	public function testNil(): void {
 		$node = Node::nil();
@@ -33,8 +44,8 @@ class NodeTest extends TestCase {
 	}
 
 	/**
-	 * @uses \Danon\IntervalTree\Pair
-	 * @uses \Danon\IntervalTree\Interval\NumericInterval
+	 * @uses \Wikimedia\IntervalTree\Pair
+	 * @uses \Wikimedia\IntervalTree\Interval\NumericInterval
 	 */
 	public function testGetParent(): void {
 		$node = Node::withPair( new Pair( NumericInterval::fromArray( [ 1, 5 ] ) ) );
@@ -44,8 +55,8 @@ class NodeTest extends TestCase {
 	}
 
 	/**
-	 * @uses \Danon\IntervalTree\Pair
-	 * @uses \Danon\IntervalTree\Interval\NumericInterval
+	 * @uses \Wikimedia\IntervalTree\Pair
+	 * @uses \Wikimedia\IntervalTree\Interval\NumericInterval
 	 */
 	public function testCopyPairFrom(): void {
 		$node = Node::withPair( new Pair( NumericInterval::fromArray( [ 1, 5 ] ) ) );
@@ -55,9 +66,9 @@ class NodeTest extends TestCase {
 	}
 
 	/**
-	 * @uses \Danon\IntervalTree\Pair
-	 * @uses \Danon\IntervalTree\Interval\NumericInterval
-	 * @uses \Danon\IntervalTree\NodeColor
+	 * @uses \Wikimedia\IntervalTree\Pair
+	 * @uses \Wikimedia\IntervalTree\Interval\NumericInterval
+	 * @uses \Wikimedia\IntervalTree\NodeColor
 	 */
 	public function testGetColor(): void {
 		$node = Node::withPair( new Pair( NumericInterval::fromArray( [ 1, 5 ] ) ) );
@@ -68,8 +79,8 @@ class NodeTest extends TestCase {
 	}
 
 	/**
-	 * @uses \Danon\IntervalTree\Pair
-	 * @uses \Danon\IntervalTree\Interval\NumericInterval
+	 * @uses \Wikimedia\IntervalTree\Pair
+	 * @uses \Wikimedia\IntervalTree\Interval\NumericInterval
 	 */
 	public function testEqualTo(): void {
 		$node = Node::withPair( new Pair( NumericInterval::fromArray( [ 1, 5 ] ), 'foo' ) );
@@ -80,8 +91,8 @@ class NodeTest extends TestCase {
 	}
 
 	/**
-	 * @uses \Danon\IntervalTree\Pair
-	 * @uses \Danon\IntervalTree\Interval\NumericInterval
+	 * @uses \Wikimedia\IntervalTree\Pair
+	 * @uses \Wikimedia\IntervalTree\Interval\NumericInterval
 	 */
 	public function testEqualToComparesFalsyValues(): void {
 		$interval = NumericInterval::fromArray( [ 1, 5 ] );
@@ -99,9 +110,9 @@ class NodeTest extends TestCase {
 	}
 
 	/**
-	 * @uses \Danon\IntervalTree\Pair
-	 * @uses \Danon\IntervalTree\Interval\NumericInterval
-	 * @covers \Danon\IntervalTree\Node::getRight
+	 * @uses \Wikimedia\IntervalTree\Pair
+	 * @uses \Wikimedia\IntervalTree\Interval\NumericInterval
+	 * @covers \Wikimedia\IntervalTree\Node::getRight
 	 */
 	public function testSetRight(): void {
 		$node = Node::withPair( new Pair( NumericInterval::fromArray( [ 1, 5 ] ) ) );
@@ -111,9 +122,9 @@ class NodeTest extends TestCase {
 	}
 
 	/**
-	 * @uses \Danon\IntervalTree\Pair
-	 * @uses \Danon\IntervalTree\Interval\NumericInterval
-	 * @covers \Danon\IntervalTree\Node::getLeft
+	 * @uses \Wikimedia\IntervalTree\Pair
+	 * @uses \Wikimedia\IntervalTree\Interval\NumericInterval
+	 * @covers \Wikimedia\IntervalTree\Node::getLeft
 	 */
 	public function testSetLeft(): void {
 		$node = Node::withPair( new Pair( NumericInterval::fromArray( [ 1, 5 ] ) ) );

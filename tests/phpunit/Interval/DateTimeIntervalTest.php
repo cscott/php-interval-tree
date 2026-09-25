@@ -1,16 +1,27 @@
 <?php
+/**
+ * Copyright (c) 2021 Akhmetov Daniil
+ *
+ * Originally written by Daniil Akhmetov as part of
+ * https://github.com/dan-on/php-interval-tree
+ *
+ * SPDX-License-Identifier: MIT
+ * See the LICENSE file for the full license text.
+ *
+ * @file
+ */
 
 declare( strict_types=1 );
 
-namespace Danon\IntervalTree\Tests\Interval;
+namespace Wikimedia\IntervalTree\Tests\Interval;
 
-use Danon\IntervalTree\Interval\DateTimeInterval;
 use DateTime;
 use InvalidArgumentException;
 use PHPUnit\Framework\TestCase;
+use Wikimedia\IntervalTree\Interval\DateTimeInterval;
 
 /**
- * @covers \Danon\IntervalTree\Interval\DateTimeInterval
+ * @covers \Wikimedia\IntervalTree\Interval\DateTimeInterval
  */
 final class DateTimeIntervalTest extends TestCase {
 	public function testConstruct(): void {

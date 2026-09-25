@@ -2,11 +2,11 @@
 
 declare( strict_types=1 );
 
-namespace Danon\IntervalTree\Tests;
+namespace Wikimedia\IntervalTree\Tests;
 
-use Danon\IntervalTree\Interval\NumericInterval;
-use Danon\IntervalTree\IntervalTree;
 use PHPUnit\Framework\TestCase;
+use Wikimedia\IntervalTree\Interval\NumericInterval;
+use Wikimedia\IntervalTree\IntervalTree;
 
 /**
  * Compares the tree against a brute-force list under a random mix of
@@ -14,11 +14,11 @@ use PHPUnit\Framework\TestCase;
  * rebalancing and max-augmentation) and then with many duplicate intervals
  * (exercising lookup of equal intervals with different values).
  *
- * @covers \Danon\IntervalTree\IntervalTree
- * @uses \Danon\IntervalTree\Interval\NumericInterval
- * @uses \Danon\IntervalTree\Node
- * @uses \Danon\IntervalTree\NodeColor
- * @uses \Danon\IntervalTree\Pair
+ * @covers \Wikimedia\IntervalTree\IntervalTree
+ * @uses \Wikimedia\IntervalTree\Interval\NumericInterval
+ * @uses \Wikimedia\IntervalTree\Node
+ * @uses \Wikimedia\IntervalTree\NodeColor
+ * @uses \Wikimedia\IntervalTree\Pair
  */
 final class IntervalTreeRandomizedTest extends TestCase {
 	/**
