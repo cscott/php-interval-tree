@@ -72,6 +72,20 @@ final class ReadmeExamplesTest extends TestCase {
 		// #### getSize(): int
 		self::assertSame( 3, $tree->getSize() );
 
+		// #### iterateFrom(?IntervalInterface $from = null): Iterator\<Pair>
+		$values = [];
+		foreach ( $tree->iterateFrom( new NumericInterval( 2, 2 ) ) as $pair ) {
+			$values[] = $pair->getValue();
+		}
+		self::assertSame( [ 'val2', 'val3' ], $values );
+
+		// #### iterateBefore(?IntervalInterface $before = null): Iterator\<Pair>
+		$values = [];
+		foreach ( $tree->iterateBefore( new NumericInterval( 11, 11 ) ) as $pair ) {
+			$values[] = $pair->getValue();
+		}
+		self::assertSame( [ 'val2', 'val1' ], $values );
+
 		// #### remove(IntervalInterface $interval, $value): bool
 		self::assertTrue( $tree->remove( new NumericInterval( 11, 12 ), 'val3' ) );
 		self::assertFalse( $tree->remove( new NumericInterval( 11, 12 ), 'val3' ) );

@@ -142,6 +142,45 @@ final class IntervalTree {
 	}
 
 	/**
+	 * Iterate over the pairs in order of their intervals (the order given by
+	 * IntervalInterface::lessThan()), starting with the first pair whose
+	 * interval is not less than $from.  With no $from, start at the
+	 * beginning.
+	 *
+	 * Finding the start takes O(log n) time, and each further step O(1)
+	 * amortized.  Don't change the tree while iterating over it.
+	 *
+	 * @param IntervalInterface<TPoint>|null $from
+	 * @return Iterator<Pair<TPoint, TValue>>
+	 */
+	public function iterateFrom( ?IntervalInterface $from = null ): Iterator {
+		$node = $from === null ? $this->treeMinimum() : $this->firstNotLessThan( $from );
+		while ( $node !== null ) {
+			yield $node->getPair();
+			$node = $this->treeSuccessor( $node );
+		}
+	}
+
+	/**
+	 * Iterate over the pairs in reverse order of their intervals, starting
+	 * with the last pair whose interval is less than $before.  With no
+	 * $before, start at the end.
+	 *
+	 * Finding the start takes O(log n) time, and each further step O(1)
+	 * amortized.  Don't change the tree while iterating over it.
+	 *
+	 * @param IntervalInterface<TPoint>|null $before
+	 * @return Iterator<Pair<TPoint, TValue>>
+	 */
+	public function iterateBefore( ?IntervalInterface $before = null ): Iterator {
+		$node = $before === null ? $this->treeMaximum() : $this->lastLessThan( $before );
+		while ( $node !== null ) {
+			yield $node->getPair();
+			$node = $this->treePredecessor( $node );
+		}
+	}
+
+	/**
 	 * @param Node<TPoint, TValue> $node
 	 * @return void
 	 */
@@ -432,6 +471,93 @@ final class IntervalTree {
 			$nodeSuccessor = $parentNode;
 		}
 		return $nodeSuccessor;
+	}
+
+	/**
+	 * @param Node<TPoint, TValue> $node
+	 * @return Node<TPoint, TValue>
+	 */
+	private function localMaximum( Node $node ): Node {
+		$nodeMax = $node;
+		while ( $nodeMax->getRight() !== $this->nilNode ) {
+			$nodeMax = $nodeMax->getRight();
+		}
+		return $nodeMax;
+	}
+
+	/**
+	 * @param Node<TPoint, TValue> $node
+	 * @return Node<TPoint, TValue>|null
+	 */
+	private function treePredecessor( Node $node ): ?Node {
+		if ( $node->getLeft() !== $this->nilNode ) {
+			return $this->localMaximum( $node->getLeft() );
+		}
+		$currentNode = $node;
+		$parentNode = $node->getParent();
+		while ( $parentNode !== null && $parentNode->getLeft() === $currentNode ) {
+			$currentNode = $parentNode;
+			$parentNode = $parentNode->getParent();
+		}
+		return $parentNode;
+	}
+
+	/**
+	 * @return Node<TPoint, TValue>|null
+	 */
+	private function treeMinimum(): ?Node {
+		return $this->isEmpty() ? null : $this->localMinimum( $this->root );
+	}
+
+	/**
+	 * @return Node<TPoint, TValue>|null
+	 */
+	private function treeMaximum(): ?Node {
+		return $this->isEmpty() ? null : $this->localMaximum( $this->root );
+	}
+
+	/**
+	 * Returns the first node in order whose interval is not less than $key.
+	 *
+	 * The in-order sequence is sorted even when equal intervals are on
+	 * both sides of a node, so the usual descent works: if a node is less
+	 * than $key, so is its whole left subtree.
+	 *
+	 * @param IntervalInterface<TPoint> $key
+	 * @return Node<TPoint, TValue>|null
+	 */
+	private function firstNotLessThan( IntervalInterface $key ): ?Node {
+		$result = null;
+		$node = $this->root;
+		while ( $node !== $this->nilNode ) {
+			if ( $node->getPair()->getInterval()->lessThan( $key ) ) {
+				$node = $node->getRight();
+			} else {
+				$result = $node;
+				$node = $node->getLeft();
+			}
+		}
+		return $result;
+	}
+
+	/**
+	 * Returns the last node in order whose interval is less than $key.
+	 *
+	 * @param IntervalInterface<TPoint> $key
+	 * @return Node<TPoint, TValue>|null
+	 */
+	private function lastLessThan( IntervalInterface $key ): ?Node {
+		$result = null;
+		$node = $this->root;
+		while ( $node !== $this->nilNode ) {
+			if ( $node->getPair()->getInterval()->lessThan( $key ) ) {
+				$result = $node;
+				$node = $node->getRight();
+			} else {
+				$node = $node->getLeft();
+			}
+		}
+		return $result;
 	}
 
 	/**

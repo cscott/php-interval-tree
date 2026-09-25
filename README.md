@@ -101,6 +101,32 @@ Get number of items stored in the interval tree
 $tree->getSize(); // 3
 ```
 
+#### iterateFrom(?IntervalInterface $from = null): Iterator\<Pair>
+Iterate over pairs in order of their intervals, starting with the first
+one whose interval isn't less than `$from`, or from the beginning if
+`$from` is omitted
+```php
+$values = [];
+foreach ($tree->iterateFrom(new NumericInterval(2, 2)) as $pair) {
+    $values[] = $pair->getValue();
+}
+// $values is ['val2', 'val3']
+```
+
+#### iterateBefore(?IntervalInterface $before = null): Iterator\<Pair>
+Iterate over pairs in reverse order, starting with the last one whose
+interval is less than `$before`, or from the end if `$before` is omitted
+```php
+$values = [];
+foreach ($tree->iterateBefore(new NumericInterval(11, 11)) as $pair) {
+    $values[] = $pair->getValue();
+}
+// $values is ['val2', 'val1']
+```
+
+Finding the starting point takes O(log n) time.  Don't change the tree
+while iterating over it.
+
 #### remove(IntervalInterface $interval, $value): bool
 Remove node from tree by interval and value.  Returns false if there is
 no such pair in the tree.

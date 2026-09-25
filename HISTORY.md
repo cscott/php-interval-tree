@@ -34,6 +34,8 @@ Bug fixes:
   parameter.
 
 Other changes:
+* Add `iterateFrom()` and `iterateBefore()`, which iterate over the tree in
+  order (or in reverse) from a given interval.
 * Add `HalfOpenNumericInterval`, a half-open `[low, high)` interval in
   which an empty interval `[p, p)` stands for the point `p`.
 * Document what a custom `IntervalInterface` implementation must do to be
